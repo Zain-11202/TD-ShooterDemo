@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0hwjmmogds8m"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_kkjmx"]
+[ext_resource type="Texture2D" uid="uid://8aym4533atox" path="res://Pirates Theme/PNG/Default size/Ships/ship (15).png" id="2_rg4g5"]
+[ext_resource type="PackedScene" uid="uid://8g0d74ae30nr" path="res://ship_cannon.tscn" id="3_22318"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_esqv2"]
+radius = 18.0
+height = 70.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rgct8"]
+radius = 305.041
+
+[node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_kkjmx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -1.5708
+texture = ExtResource("2_rg4g5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_esqv2")
+
+[node name="DetectRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRadius"]
+shape = SubResource("CircleShape2D_rgct8")
+
+[node name="ShipCannon" parent="." instance=ExtResource("3_22318")]
+position = Vector2(32, 1)
+
+[connection signal="body_entered" from="DetectRadius" to="." method="_on_DetectRadius_body_entered"]
+[connection signal="body_exited" from="DetectRadius" to="." method="_on_DetectRadius_body_exited"]

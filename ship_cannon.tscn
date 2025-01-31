@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://8g0d74ae30nr"]
+
+[ext_resource type="Script" path="res://ShipCannon.gd" id="1_5v0qo"]
+[ext_resource type="PackedScene" uid="uid://do7kprxkebavb" path="res://Ecannon_ball.tscn" id="2_kq5fy"]
+[ext_resource type="Texture2D" uid="uid://bdh8yhq3nk52q" path="res://Pirates Theme/PNG/Default size/Ships/Ship parts/cannonMobile.png" id="3_nrjxi"]
+[ext_resource type="Texture2D" uid="uid://dwix57qf3q1tm" path="res://Pirates Theme/PNG/Default size/Effects/fire1.png" id="4_oxpwi"]
+[ext_resource type="Texture2D" uid="uid://oafe0nnkeqwf" path="res://Pirates Theme/PNG/Default size/Effects/fire2.png" id="5_xvjkf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uiqv3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_oxpwi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xvjkf")
+}],
+"loop": false,
+"name": &"fire",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"load",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pj4k2"]
+
+[node name="ShipCannon" type="Area2D"]
+script = ExtResource("1_5v0qo")
+CbObj = ExtResource("2_kq5fy")
+
+[node name="Cannon" type="Sprite2D" parent="."]
+texture = ExtResource("3_nrjxi")
+
+[node name="Muzzle" type="Marker2D" parent="Cannon"]
+
+[node name="Fire" type="AnimatedSprite2D" parent="Cannon/Muzzle"]
+position = Vector2(36, 0)
+rotation = 1.5708
+sprite_frames = SubResource("SpriteFrames_uiqv3")
+animation = &"fire"
+autoplay = "load"
+frame = 1
+frame_progress = 1.0
+
+[node name="CoolDown" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="DetectRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectRadius"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pj4k2")
+
+[node name="InSight" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="InSight"]
+polygon = PackedVector2Array(16, 0, 448, -64, 512, 0, 448, 64)
+
+[connection signal="animation_finished" from="Cannon/Muzzle/Fire" to="." method="_on_fire_animation_finished"]
+[connection signal="body_entered" from="DetectRadius" to="." method="_on_DetectRadius_body_entered"]
+[connection signal="body_exited" from="DetectRadius" to="." method="_on_DetectRadius_body_exited"]
+[connection signal="body_entered" from="InSight" to="." method="_on_InSight_body_entered"]
+[connection signal="body_exited" from="InSight" to="." method="_on_InSight_body_exited"]

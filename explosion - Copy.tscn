@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://bdi77bioky6wq"]
+
+[ext_resource type="Script" path="res://explosion.gd" id="1_pybpf"]
+[ext_resource type="Texture2D" uid="uid://ba6bwvsgigg6y" path="res://Pirates Theme/PNG/Default size/Effects/explosion3.png" id="1_teg30"]
+[ext_resource type="Texture2D" uid="uid://1elmkcjkxp5v" path="res://Pirates Theme/PNG/Default size/Effects/explosion2.png" id="2_5edsy"]
+[ext_resource type="Texture2D" uid="uid://qyj1hihpn5yq" path="res://Pirates Theme/PNG/Default size/Effects/explosion1.png" id="3_jkjgt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kirwe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_teg30")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_5edsy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_jkjgt")
+}],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="Explosion" type="Node2D"]
+script = ExtResource("1_pybpf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_kirwe")
+autoplay = "default"
+frame_progress = 0.44981
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
